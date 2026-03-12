@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block title %}Login - SVM{% endblock %}
+
+{% block content %}
+<div class="fade-in" style="max-width: 450px; margin: 4rem auto;">
+    <div class="glass-card">
+        <h2 style="margin-bottom: 2rem; text-align: center;">Welcome <span style="color: var(--primary);">Back</span></h2>
+        <form action="{{ url_for('auth.login') }}" method="POST">
+            <div class="form-group">
+                <label class="form-label">Email Address</label>
+                <input type="email" name="email" class="form-input" placeholder="name@example.com" required>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Password</label>
+                <input type="password" name="password" class="form-input" placeholder="••••••••" required>
+            </div>
+            <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center; padding: 0.8rem;">
+                Login to Dashboard
+            </button>
+        </form>
+        <p style="margin-top: 1.5rem; text-align: center; color: var(--text-muted);">
+            Don't have an account? <a href="{{ url_for('auth.register') }}" style="color: var(--primary);">Register here</a>
+        </p>
+    </div>
+</div>
+{% endblock %}

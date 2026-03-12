@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+
+{% block title %}Add Vehicle - SVM{% endblock %}
+
+{% block content %}
+<div class="fade-in">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+        <h1>Add New <span style="color: var(--primary);">Vehicle</span></h1>
+        <a href="{{ url_for('analytics.dashboard') }}" class="btn btn-outline">Cancel</a>
+    </div>
+
+    <div class="glass-card" style="max-width: 800px;">
+        <form action="{{ url_for('vehicle.add_vehicle') }}" method="POST">
+            <div class="dashboard-grid">
+                <div class="form-group">
+                    <label class="form-label">Vehicle Name</label>
+                    <input type="text" name="name" class="form-input" placeholder="My Beast" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Brand</label>
+                    <input type="text" name="brand" class="form-input" placeholder="Toyota / Honda" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Model</label>
+                    <input type="text" name="model" class="form-input" placeholder="Camry / Civic" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Vehicle Type</label>
+                    <select name="vehicle_type" class="form-input">
+                        <option value="Car">Car</option>
+                        <option value="Bike">Bike</option>
+                        <option value="Scooter">Scooter</option>
+                        <option value="Truck">Truck</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Registration Number</label>
+                    <input type="text" name="registration_number" class="form-input" placeholder="ABC-1234" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Purchase Date</label>
+                    <input type="date" name="purchase_date" class="form-input">
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Current Odometer (KM)</label>
+                    <input type="number" name="current_odometer" class="form-input" placeholder="15000" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Fuel Type</label>
+                    <select name="fuel_type" class="form-input">
+                        <option value="Petrol">Petrol</option>
+                        <option value="Diesel">Diesel</option>
+                        <option value="Electric">Electric</option>
+                        <option value="Hybrid">Hybrid</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Avg. Mileage (km/l)</label>
+                    <input type="number" step="0.1" name="average_mileage" class="form-input" placeholder="15.5">
+                </div>
+            </div>
+            
+            <div style="margin-top: 2rem;">
+                <button type="submit" class="btn btn-primary" style="padding: 0.8rem 2rem;">
+                    <i class="fas fa-save"></i> Register Vehicle
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

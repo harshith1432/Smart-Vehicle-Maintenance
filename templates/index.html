@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block title %}Welcome - Smart Vehicle Maintenance{% endblock %}
+
+{% block content %}
+<div class="fade-in" style="text-align: center; max-width: 800px; margin: 4rem auto;">
+    <h1 style="font-size: 3.5rem; margin-bottom: 1rem;">Intelligent Fleet <span style="color: var(--primary);">Maintenance</span></h1>
+    <p style="color: var(--text-muted); font-size: 1.2rem; margin-bottom: 2rem;">
+        Predictive analytics, automated scaling service forecasts, and real-time health monitoring for your vehicles.
+    </p>
+    <div style="display: flex; gap: 1rem; justify-content: center;">
+        <a href="{{ url_for('auth.register') }}" class="btn btn-primary" style="padding: 1rem 2.5rem; font-size: 1.1rem;">Get Started</a>
+        <a href="{{ url_for('auth.login') }}" class="btn btn-outline" style="padding: 1rem 2.5rem; font-size: 1.1rem;">Login Dashboard</a>
+    </div>
+
+    <div class="dashboard-grid" style="margin-top: 5rem;">
+        <div class="glass-card">
+            <i class="fas fa-brain" style="font-size: 2rem; color: var(--primary); margin-bottom: 1rem;"></i>
+            <h3>Smart Prediction</h3>
+            <p style="color: var(--text-muted);">AI-powered service interval calculations based on driving patterns.</p>
+        </div>
+        <div class="glass-card">
+            <i class="fas fa-heartbeat" style="font-size: 2rem; color: var(--success); margin-bottom: 1rem;"></i>
+            <h3>Health Score</h3>
+            <p style="color: var(--text-muted);">Real-time vehicle health monitoring with proprietary algorithms.</p>
+        </div>
+        <div class="glass-card">
+            <i class="fas fa-money-bill-wave" style="font-size: 2rem; color: var(--warning); margin-bottom: 1rem;"></i>
+            <h3>Expense Tracking</h3>
+            <p style="color: var(--text-muted);">Monitor spending across fuel, service, and components.</p>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block title %}Maintenance History - {{ vehicle.name }}{% endblock %}
+
+{% block content %}
+<div class="fade-in">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+        <h1>Service <span style="color: var(--primary);">History</span></h1>
+        <a href="{{ url_for('vehicle.details', id=vehicle.id) }}" class="btn btn-outline">Back to Details</a>
+    </div>
+
+    <div class="glass-card">
+        {% if records %}
+        <div style="position: relative; padding-left: 2rem; border-left: 2px solid var(--border); margin-left: 1rem;">
+            {% for record in records %}
+            <div class="fade-in" style="position: relative; margin-bottom: 3rem;">
+                <div style="position: absolute; left: calc(-2rem - 6px); top: 0; width: 10px; height: 10px; background: var(--primary); border-radius: 50%; border: 4px solid var(--bg-dark); box-shadow: 0 0 0 4px var(--border);"></div>
+                
+                <div class="glass-card" style="margin-top: -0.5rem;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                        <h3 style="color: var(--primary);">{{ record.service_type }}</h3>
+                        <span style="font-weight: 700;">${{ "%.2f"|format(record.cost) }}</span>
+                    </div>
+                    <div style="display: flex; gap: 2rem; font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">
+                        <span><i class="far fa-calendar-alt"></i> {{ record.service_date.strftime('%B %d, %Y') }}</span>
+                        <span><i class="fas fa-tachometer-alt"></i> {{ record.odometer_reading }} KM</span>
+                    </div>
+                    {% if record.notes %}
+                    <p style="font-size: 0.9rem; background: rgba(0,0,0,0.2); padding: 1rem; border-radius: 8px;">
+                        {{ record.notes }}
+                    </p>
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div style="text-align: center; padding: 3rem;">
+            <p style="color: var(--text-muted);">No maintenance records found for this vehicle.</p>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

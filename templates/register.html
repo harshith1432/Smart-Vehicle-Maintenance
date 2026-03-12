@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block title %}Register - SVM{% endblock %}
+
+{% block content %}
+<div class="fade-in" style="max-width: 500px; margin: 3rem auto;">
+    <div class="glass-card">
+        <h2 style="margin-bottom: 2rem; text-align: center;">Create <span style="color: var(--primary);">Account</span></h2>
+        <form action="{{ url_for('auth.register') }}" method="POST">
+            <div class="form-group">
+                <label class="form-label">Full Name</label>
+                <input type="text" name="name" class="form-input" placeholder="John Doe" required>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Email Address</label>
+                <input type="email" name="email" class="form-input" placeholder="name@example.com" required>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Phone Number</label>
+                <input type="text" name="phone" class="form-input" placeholder="+1234567890">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Password</label>
+                <input type="password" name="password" class="form-input" placeholder="••••••••" required>
+            </div>
+            <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center; padding: 0.8rem;">
+                Create Account
+            </button>
+        </form>
+        <p style="margin-top: 1.5rem; text-align: center; color: var(--text-muted);">
+            Already have an account? <a href="{{ url_for('auth.login') }}" style="color: var(--primary);">Login here</a>
+        </p>
+    </div>
+</div>
+{% endblock %}

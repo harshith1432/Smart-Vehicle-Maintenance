@@ -1,0 +1,136 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - SVM Intelligence{% endblock %}
+
+{% block content %}
+<div class="fade-in">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+        <h1>Dashboard <span style="font-weight: 400; color: var(--text-muted);">Overview</span></h1>
+        <div style="display: flex; gap: 1rem;">
+            <div class="glass-card" style="padding: 0.5rem 1rem; display: flex; align-items: center; gap: 1rem; border: 1px solid var(--primary);">
+                <span style="color: var(--text-muted); font-size: 0.8rem;">MONTHLY COST</span>
+                <span style="font-weight: 700; color: var(--primary);">${{ metrics.monthly_cost }}</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Vehicles Section -->
+    <h2 style="margin-bottom: 1rem;">Your <span style="color: var(--primary);">Vehicles</span></h2>
+    <div class="dashboard-grid" style="margin-bottom: 3rem;">
+        {% for info in vehicle_data %}
+        <div class="glass-card fade-in" style="position: relative; overflow: hidden;">
+            <div style="position: absolute; top: 0; right: 0; width: 4px; height: 100%; background: var(--{{ info.health_color }});"></div>
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem;">
+                <div>
+                    <h3 style="font-size: 1.4rem;">{{ info.vehicle.name }}</h3>
+                    <p style="color: var(--text-muted); font-size: 0.8rem;">{{ info.vehicle.brand }} {{ info.vehicle.model }}</p>
+                </div>
+                <div class="glass-card" style="padding: 0.3rem 0.6rem; font-size: 0.7rem; background: rgba(255,255,255,0.05);">
+                    {{ info.vehicle.registration_number }}
+                </div>
+            </div>
+            
+            <div style="margin-bottom: 1.5rem;">
+                <div style="display: flex; justify-content: space-between; font-size: 0.9rem; margin-bottom: 0.3rem;">
+                    <span>Health Score</span>
+                    <span style="color: var(--{{ info.health_color }}); font-weight: 700;">{{ info.health_score }}%</span>
+                </div>
+                <div style="height: 6px; background: var(--bg-dark); border-radius: 3px;">
+                    <div style="width: {{ info.health_score }}%; height: 100%; background: var(--{{ info.health_color }}); border-radius: 3px; transition: width 1s ease;"></div>
+                </div>
+            </div>
+
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div style="display: flex; flex-direction: column;">
+                    <span style="font-size: 0.7rem; color: var(--text-muted);">MILEAGE</span>
+                    <span style="font-weight: 600;">{{ info.vehicle.current_odometer }} KM</span>
+                </div>
+                <a href="{{ url_for('vehicle.details', id=info.vehicle.id) }}" class="btn btn-outline" style="font-size: 0.8rem;">
+                    View Details <i class="fas fa-chevron-right" style="font-size: 0.7rem;"></i>
+                </a>
+            </div>
+        </div>
+        {% else %}
+        <div class="glass-card" style="grid-column: 1/-1; text-align: center; padding: 3rem;">
+            <p style="color: var(--text-muted); margin-bottom: 1rem;">No vehicles registered yet.</p>
+            <a href="{{ url_for('vehicle.add_vehicle') }}" class="btn btn-primary">Add Your First Vehicle</a>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Analytics Section -->
+    <div class="dashboard-grid">
+        <div class="glass-card">
+            <h3 style="margin-bottom: 1.5rem;">Cost <span style="color: var(--primary);">Analysis</span></h3>
+            <canvas id="costChart" height="200"></canvas>
+        </div>
+        <div class="glass-card">
+            <h3 style="margin-bottom: 1.5rem;">Expense <span style="color: var(--primary);">Breakdown</span></h3>
+            <canvas id="breakdownChart" height="200"></canvas>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Cost Chart
+        fetch('/analytics/api/spending')
+            .then(res => res.json())
+            .then(data => {
+                const ctx = document.getElementById('costChart').getContext('2d');
+                new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: Object.keys(data),
+                        datasets: [{
+                            label: 'Monthly Spending ($)',
+                            data: Object.values(data),
+                            borderColor: '#3b82f6',
+                            backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                            fill: true,
+                            tension: 0.4
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: { legend: { display: false } },
+                        scales: {
+                            y: { grid: { color: '#334155' }, ticks: { color: '#94a3b8' } },
+                            x: { grid: { display: false }, ticks: { color: '#94a3b8' } }
+                        }
+                    }
+                });
+            });
+
+        // Breakdown Chart
+        fetch('/analytics/api/breakdown')
+            .then(res => res.json())
+            .then(data => {
+                const ctx = document.getElementById('breakdownChart').getContext('2d');
+                new Chart(ctx, {
+                    type: 'doughnut',
+                    data: {
+                        labels: Object.keys(data),
+                        datasets: [{
+                            data: Object.values(data),
+                            backgroundColor: ['#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#64748b'],
+                            borderWidth: 0
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: {
+                                position: 'bottom',
+                                labels: { color: '#94a3b8', padding: 20 }
+                            }
+                        },
+                        cutout: '70%'
+                    }
+                });
+            });
+    });
+</script>
+{% endblock %}
